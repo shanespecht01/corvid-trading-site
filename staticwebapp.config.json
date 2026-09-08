@@ -1,0 +1,17 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/css/*", "/js/*", "/api/*", "/*.svg", "/favicon.svg"]
+  },
+  "mimeTypes": { ".svg": "image/svg+xml", ".json": "application/json" },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "SAMEORIGIN",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  },
+  "routes": [
+    { "route": "/css/*",    "headers": { "Cache-Control": "public, max-age=600" } },
+    { "route": "/js/*",     "headers": { "Cache-Control": "public, max-age=600" } },
+    { "route": "/assets/*", "headers": { "Cache-Control": "public, max-age=86400" } }
+  ]
+}

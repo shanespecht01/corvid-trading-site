@@ -1,0 +1,14 @@
+# dependencies / build
+node_modules/
+dist/
+# azure functions local secrets (added later with /api)
+api/local.settings.json
+# env & secrets
+.env
+.env.local
+*.local
+# os / editor
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
