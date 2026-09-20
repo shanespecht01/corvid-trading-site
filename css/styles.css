@@ -95,10 +95,8 @@
 
   /* ---------- MARQUEE / POSITIONING ---------- */
   .strip{border-block:1px solid var(--line); background:rgba(17,22,35,.5)}
-  .strip-in{display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; padding-block:20px}
-  .strip .tag{font-family:var(--struct); font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
-  .strip .tag b{color:var(--peri); font-weight:600}
-  .strip .diff{font-family:var(--serif); font-style:italic; font-size:1.15rem; color:var(--bone)}
+  .strip-in{display:flex; align-items:center; justify-content:center; padding-block:20px}
+  .strip .diff{font-family:var(--serif); font-style:italic; font-size:1.15rem; color:var(--bone); text-align:center}
 
   /* ---------- SECTIONS ---------- */
   section{position:relative; padding-block:clamp(64px,9vw,120px)}
@@ -273,5 +271,4 @@
     .goods-grid{grid-template-columns:1fr 1fr}
     .row{grid-template-columns:1fr}
     .hero-meta{gap:18px}
-    .strip-in{justify-content:flex-start}
   }
