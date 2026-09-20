@@ -1,7 +1,7 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/assets/*", "/css/*", "/js/*", "/api/*", "/*.svg", "/favicon.svg"]
+    "exclude": ["/assets/*", "/css/*", "/js/*", "/api/*", "/boards/*", "/*.svg", "/favicon.svg"]
   },
   "mimeTypes": { ".svg": "image/svg+xml", ".json": "application/json" },
   "globalHeaders": {

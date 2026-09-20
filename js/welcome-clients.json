@@ -2,8 +2,17 @@
   {
     "slug": "hank",
     "name": "Hank",
-    "message": "We pulled together your can cooler options below — take a look and let us know what fits.",
-    "presentationUrl": "https://promohunt.com/presentations/CfjPtrEF",
-    "ctaLabel": "View your order options"
+    "welcomeHeadline": "Welcome, Hank.",
+    "welcomeBlurb": "We pulled together your can cooler options below — take a look and let us know what fits.",
+    "boardPath": "",
+    "promoHuntUrl": "https://promohunt.com/presentations/CfjPtrEF"
+  },
+  {
+    "slug": "rojo",
+    "name": "RoJo Legacy",
+    "welcomeHeadline": "Welcome, RoJo Legacy.",
+    "welcomeBlurb": "We pulled together a few ideas for spirit gear, team travel, fundraising, and sponsor thank-yous — take a look at your board.",
+    "boardPath": "boards/rojo.html",
+    "promoHuntUrl": ""
   }
 ]

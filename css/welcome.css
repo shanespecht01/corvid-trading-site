@@ -21,7 +21,20 @@
   font-size:clamp(1.5rem,3vw,2.1rem); margin:.3em 0 0;
 }
 .welcome-copy p{color:var(--muted); margin:.6em 0 0; max-width:62ch}
-.welcome-copy .btn{margin-top:18px}
+.welcome-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:18px}
+.welcome-actions .btn[hidden]{display:none}
+.welcome-in{position:relative}
+.welcome-edit-toggle{position:absolute; top:0; right:0}
+.welcome-edit-fields{display:grid; gap:10px; margin-top:16px; max-width:420px}
+.welcome-edit-fields label{
+  display:grid; gap:5px; font-family:var(--struct); font-size:11px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--muted-2);
+}
+.welcome-edit-fields input{
+  font-family:var(--body); font-size:.95rem; color:var(--bone); background:var(--ink-2);
+  border:1px solid var(--line-2); border-radius:8px; padding:9px 12px; text-transform:none; letter-spacing:normal;
+}
 @media (max-width:640px){
   .welcome-in{padding-block:26px}
+  .welcome-edit-toggle{position:static; margin-top:14px}
 }
