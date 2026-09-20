@@ -73,51 +73,15 @@ showing a handful of margin-smart product picks tailored to that client, with
 planning-estimate pricing they (or Amanda) can react to before anything gets
 a real PromoHunt quote. The first one is `boards/rojo.html` (RoJo Legacy).
 
-### Opening a board
+**For day-to-day use — opening a board, unlocking editing, what's editable
+and what isn't, and setting a client's PromoHunt link — see [AMANDA.md](AMANDA.md).**
+That's the non-technical guide. Below is the technical side: the edit-mode
+mechanism and how to wire up a new client's board in the code.
 
-Just open the file, e.g.
-`https://red-cliff-0f6d37810.3.azurestaticapps.net/boards/rojo.html` — or
-click the "See your idea board →" button on that client's welcome banner
-(`?welcome=rojo`).
-
-### Unlocking editing
-
-Add `?key=AMANDA123` to the URL of either the board page or the main site
-(for the welcome banner), or click the small dashed **Edit** button at the
-bottom of a board / top-right of the welcome banner and enter the key when
-prompted. **This key is a convenience, not a password** — it's public,
-right here in this README and in the code. Don't put anything sensitive
-behind it.
-
-Once unlocked, on a board you can edit:
-- each product's "corvid's-eye" note
-- its **Item #** and **Your price** fields (these two are actually always
-  typable, key or not — the key is what makes the change *stick*)
-
-On the welcome banner you can edit the headline, the blurb, and the idea
-board / PromoHunt links.
-
-### Saving your changes
-
-A bar appears at the bottom while editing:
-- **Save** — writes your edits to *this browser, this device only*
-  (`localStorage`). Reopen the same board on the same computer later and
-  your edits are still there. Opening it on a different computer, or after
-  clearing browser data, won't show them.
-- **Export JSON** — downloads a JSON file with everything as it currently
-  stands (including your edits). Send that file to Shane so it can be
-  committed into the real data file (`boards/rojo.data.js` for a board,
-  `js/welcome-clients.json` for the banner) and show up for everyone.
-- **Done** — locks the page back up.
-
-There's a documented (not yet built) plan for a real shared save — see
-`api/board/README.md` — for whenever this is worth the extra setup.
-
-### Setting a client's PromoHunt link
-
-Open `js/welcome-clients.json`, find that client's entry, and fill in
-`promoHuntUrl` with the link to their PromoHunt presentation. Same file
-handles `boardPath` if/when they get an idea board.
+Editing (`?key=AMANDA123`, see `js/edit-mode.js`) is a convenience toggle,
+not security, and saves to `localStorage` per-device only, with an Export
+JSON button to hand edits back for a real commit. There's a documented (not
+yet built) plan for a real shared save — see `api/board/README.md`.
 
 ### Adding the next client's board
 
