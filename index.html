@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/welcome.css"><!-- EXPERIMENTAL: see index.html #welcomeBanner comment for removal -->
+  <link rel="stylesheet" href="css/edit-mode.css"><!-- EXPERIMENTAL: shared with the client idea boards, see boards/rojo.html -->
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -40,32 +41,49 @@
 <span id="top"></span>
 
 <!-- ================================================================
-     EXPERIMENTAL: Personalized client welcome banner
+     EXPERIMENTAL: Personalized client welcome banner + idea boards
      Shows only when the page loads with ?welcome=<slug> and that slug
      exists in js/welcome-clients.json (e.g. ?welcome=hank). Hidden by
      default — invisible to every normal visitor, no effect otherwise.
 
+     Each client entry can carry a boardPath (an internal idea board,
+     see boards/rojo.html) and/or a promoHuntUrl (an external PromoHunt
+     presentation). Up to two buttons render, each ONLY when its field
+     is set — if neither is set, no buttons show.
+
      TO REMOVE THIS FEATURE COMPLETELY:
        1. Delete this <section id="welcomeBanner"> block.
-       2. Delete the css/welcome.css <link> tag in <head>.
-       3. Delete the js/welcome.js <script> tag near the bottom of this file.
+       2. Delete the css/welcome.css and css/edit-mode.css <link> tags
+          in <head> (edit-mode.css only if boards/ is also being removed).
+       3. Delete the js/welcome.js and js/edit-mode.js <script> tags
+          near the bottom of this file.
        4. Delete these files: css/welcome.css, js/welcome.js,
           js/welcome-clients.json, assets/feather-welcome.svg.
        Nothing else on the site references them.
 
-     TO ADD A NEW PERSONALIZED WELCOME (no coding needed):
-       Open js/welcome-clients.json and add an entry — copy the "hank"
-       one and change the values. Then share a link like:
+     TO ADD A NEW CLIENT (no coding needed):
+       Open js/welcome-clients.json and add an entry — copy the "rojo"
+       one and change the values (leave boardPath or promoHuntUrl blank
+       to skip that button). Then share a link like:
          https://red-cliff-0f6d37810.3.azurestaticapps.net/?welcome=<slug>
+       See README.md "Client idea boards" for the full walkthrough,
+       including how to give that client their own idea board.
+
+     Add ?key=AMANDA123 to the URL (or click "Edit" once it appears)
+     to edit this banner's copy/links in place — saved to this browser
+     only, with an Export button to hand the JSON back for a real commit.
      ================================================================ -->
 <section id="welcomeBanner" class="welcome-banner" hidden>
   <div class="wrap welcome-in">
     <div class="welcome-feather"><img src="assets/feather-welcome.svg" alt="" aria-hidden="true"></div>
     <div class="welcome-copy">
       <span class="eyebrow">Made for you</span>
-      <h2>Welcome, <span id="welcomeName">friend</span>.</h2>
+      <h2 id="welcomeHeadline">Welcome, friend.</h2>
       <p id="welcomeMessage">We've updated a few things just for you.</p>
-      <a class="btn btn-primary" id="welcomeCta" href="#" target="_blank" rel="noopener">View your order options</a>
+      <div class="welcome-actions">
+        <a class="btn btn-primary" id="welcomeBoardLink" href="#" hidden>See your idea board →</a>
+        <a class="btn btn-ghost" id="welcomePromoLink" href="#" target="_blank" rel="noopener" hidden>Open your PromoHunt →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -489,6 +507,7 @@
 </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/edit-mode.js" defer></script><!-- EXPERIMENTAL: shared with the client idea boards, see boards/rojo.html -->
   <script src="js/welcome.js" defer></script><!-- EXPERIMENTAL: see index.html #welcomeBanner comment for removal -->
 </body>
 </html>

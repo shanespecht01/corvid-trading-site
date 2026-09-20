@@ -1,0 +1,37 @@
+/* ================================================================
+   EXPERIMENTAL: shared edit-mode styling (save bar + editable fields).
+   Used on index.html (welcome banner) and boards/*.html.
+   Safe to delete alongside js/edit-mode.js if the edit feature is cut.
+   ================================================================ */
+.edit-toggle{
+  font-family:var(--struct); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted-2); background:none; border:1px dashed var(--line-2); border-radius:999px;
+  padding:6px 12px; cursor:pointer; transition:color .2s,border-color .2s;
+}
+.edit-toggle:hover{color:var(--peri); border-color:var(--peri)}
+
+[data-editable="true"]{
+  outline:1px dashed var(--line-2); outline-offset:3px; border-radius:4px;
+  cursor:text; transition:outline-color .2s, background .2s;
+}
+[data-editable="true"]:hover,[data-editable="true"]:focus{
+  outline-color:var(--peri); background:rgba(142,162,230,.06);
+}
+.spec-ticket input[data-editable="true"]{
+  outline:none; border:1px dashed var(--line-2); border-radius:6px;
+  background:rgba(142,162,230,.05); padding:2px 6px;
+}
+.spec-ticket input[data-editable="true"]:focus{border-color:var(--peri); background:rgba(142,162,230,.1)}
+
+.edit-savebar{
+  position:fixed; left:0; right:0; bottom:0; z-index:80;
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  padding:14px clamp(16px,4vw,32px);
+  background:rgba(10,12,18,.92); backdrop-filter:blur(10px);
+  border-top:1px solid var(--line-2);
+  font-family:var(--struct); font-size:13px;
+}
+.edit-savebar-label{color:var(--muted)}
+.edit-savebar-actions{display:flex; gap:10px; flex-wrap:wrap}
+.edit-savebar .btn{padding:8px 16px; font-size:12.5px}
+body:has(.edit-savebar){padding-bottom:64px}
