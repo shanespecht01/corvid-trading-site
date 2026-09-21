@@ -81,6 +81,22 @@ tokens per theme — no layout rules, no duplicated CSS. `js/themes.js` sets
 `data-theme` on `<html>` before first paint and loads a theme's Google Fonts
 only when that theme is actually used, so normal visitors pay nothing.
 
+**The feather** is retinted per theme, never hand-edited — each
+`assets/feather-<slug>.svg` was generated from the linework source with the
+`corvid-trading` skill's `scripts/recolor_feather.py`, which now carries a
+matching palette per theme (plus its own shadow/highlight/flash tints, since
+the default indigo shadow turns the warm palettes muddy):
+
+    python scripts/recolor_feather.py --in assets/feather-linework.svg \
+      --palette <slug> --tight --out assets/feather-<slug>.svg
+
+`js/themes.js` swaps the `<img class="mark">` feathers by `src`, and for the
+inlined hero feather replaces only the inner content of the existing `<svg>`
+— so the outer element keeps its own viewBox (no double-viewBox bug) and the
+facets keep the `class="f"` + `--ty/--tx/--r` vars the twinkle animates.
+Switching back to Original restores the shipped feathers, including the
+welcome banner's deliberately-different peacock one.
+
 **Adding a token:** if a theme needs a value that's still hardcoded, add the
 token to `:root` in `styles.css` (default = today's look) and reference it —
 don't put raw colours in the rules.

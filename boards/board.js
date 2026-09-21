@@ -54,7 +54,7 @@
   function buildShell(data) {
     return (
       '<nav class="board-nav"><div class="wrap">' +
-        '<a class="back" href="../index.html"><img src="../assets/feather-mark.svg" alt="" aria-hidden="true">Corvid Trading Co.</a>' +
+        '<a class="back" href="../index.html"><img class="mark" src="../assets/feather-mark.svg" alt="" aria-hidden="true">Corvid Trading Co.</a>' +
         '<span class="tag">Idea board · not a quote</span>' +
       '</div></nav>' +
       '<header class="board-cover wrap">' +

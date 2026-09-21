@@ -55,6 +55,50 @@
 
   var params = new URLSearchParams(window.location.search);
 
+  // Works from both / and /boards/ — derive the site root from this script's
+  // own URL rather than guessing a relative prefix.
+  var ROOT = ((document.currentScript && document.currentScript.src) || '')
+    .replace(/js\/themes\.js(?:\?.*)?$/, '');
+
+  function featherUrl(slug) {
+    return ROOT + 'assets/feather-' + slug + '.svg';
+  }
+
+  // Each theme has its own feather, recolored from the linework source with
+  // scripts/recolor_feather.py (see the corvid-trading skill) — never by hand.
+  var heroCache = {};
+
+  function applyFeather(slug) {
+    // static marks: nav, story, footer, the board pages, the welcome banner
+    document.querySelectorAll('img.mark, .welcome-feather img').forEach(function (img) {
+      if (!img.getAttribute('data-feather-orig')) {
+        img.setAttribute('data-feather-orig', img.getAttribute('src'));
+      }
+      img.setAttribute('src', slug ? featherUrl(slug) : img.getAttribute('data-feather-orig'));
+    });
+
+    // the hero feather is inlined so CSS can twinkle its individual facets —
+    // swap only the inner content so the outer <svg> keeps its own viewBox
+    var hero = document.querySelector('.feather-wrap > svg');
+    if (!hero) return;
+    if (heroCache[''] === undefined) heroCache[''] = hero.innerHTML;
+    if (heroCache[slug] !== undefined) { hero.innerHTML = heroCache[slug]; return; }
+
+    fetch(featherUrl(slug))
+      .then(function (r) { return r.ok ? r.text() : null; })
+      .then(function (txt) {
+        if (!txt) return;
+        var parsed = new DOMParser().parseFromString(txt, 'image/svg+xml').querySelector('svg');
+        if (!parsed) return;
+        heroCache[slug] = parsed.innerHTML;
+        // only paint it if this theme is still the active one
+        if ((document.documentElement.getAttribute('data-theme') || '') === slug) {
+          hero.innerHTML = heroCache[slug];
+        }
+      })
+      .catch(function () { /* keep the current feather */ });
+  }
+
   function read() {
     try { return localStorage.getItem(STORE_KEY) || ''; } catch (e) { return ''; }
   }
@@ -83,6 +127,9 @@
     loadFonts(theme);
     if (slug) document.documentElement.setAttribute('data-theme', slug);
     else document.documentElement.removeAttribute('data-theme');
+    // this script runs in <head> before the body exists, so the first feather
+    // swap waits for DOMContentLoaded (below); later switches run immediately
+    if (document.body) applyFeather(slug);
     return slug;
   }
 
@@ -90,6 +137,9 @@
   // theme is set before first paint and the page doesn't flash.
   var active = apply(params.get('theme') !== null ? params.get('theme') : read());
   if (params.get('theme') !== null) write(active);
+  if (!document.body) {
+    document.addEventListener('DOMContentLoaded', function () { applyFeather(active); }, { once: true });
+  }
 
   if (params.get('themes') === null) return;
 
