@@ -6,7 +6,7 @@
 
 .board-nav{
   position:sticky; top:0; z-index:40; backdrop-filter:blur(12px);
-  background:rgba(10,12,18,.82); border-bottom:1px solid var(--line);
+  background:var(--nav-bg); border-bottom:var(--border-w) solid var(--line);
   padding-block:16px;
 }
 .board-nav .wrap{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
@@ -28,7 +28,7 @@
   margin-top:14px;
 }
 .board-cover h1{
-  font-family:var(--serif); font-weight:500; font-size:clamp(2.4rem,6vw,4rem);
+  font-family:var(--serif); font-weight:var(--display-weight); font-size:clamp(2.4rem,6vw,4rem);
   letter-spacing:-.015em; margin:.35em auto 0; max-width:16ch;
 }
 .board-cover .focus{color:var(--muted); font-size:1.1rem; max-width:56ch; margin:.9em auto 0}
@@ -41,23 +41,23 @@
 /* product card */
 .pcard{display:flex; flex-direction:column; gap:14px}
 .pcard .pc-note{
-  font-family:var(--serif); font-style:italic; font-size:.98rem; color:#c7cbdd; line-height:1.5; margin:0;
+  font-family:var(--serif); font-style:italic; font-size:.98rem; color:var(--text-lede); line-height:1.5; margin:0;
 }
 .pcard .pc-note::before{content:"Corvid\2019s-eye: "; font-style:normal; color:var(--peri); font-family:var(--struct); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase}
 .pc-meta{display:flex; flex-wrap:wrap; gap:8px 14px; font-family:var(--struct); font-size:12px; color:var(--muted)}
 .pc-meta .deco{color:var(--peri)}
 .pc-swatches{display:flex; gap:6px; align-items:center}
-.pc-swatch{width:16px; height:16px; border-radius:50%; border:1px solid rgba(255,255,255,.25); flex:none}
+.pc-swatch{width:16px; height:16px; border-radius:50%; border:1px solid var(--line-2); flex:none}
 .pc-uses{display:flex; flex-wrap:wrap; gap:6px}
 .pc-uses .chip{
   font-family:var(--struct); font-size:10.5px; letter-spacing:.04em; color:var(--muted);
-  border:1px solid var(--line-2); border-radius:999px; padding:4px 10px;
+  border:var(--border-w) solid var(--line-2); border-radius:var(--radius-btn); padding:4px 10px;
 }
 
 /* spec ticket */
 .spec-ticket{
   font-family:'Space Grotesk',monospace; font-size:12.5px; line-height:1.7;
-  background:var(--ink-3); border:1px dashed var(--line-2); border-radius:10px; padding:14px 16px;
+  background:var(--ink-3); border:1px dashed var(--line-2); border-radius:var(--radius-input); padding:14px 16px;
   margin-top:auto;
 }
 .spec-ticket .row{display:flex; justify-content:space-between; gap:10px}
@@ -77,16 +77,16 @@
 .spec-ticket .search-hint b{color:var(--muted)}
 
 /* calculator */
-.board-calc{background:linear-gradient(180deg,rgba(20,26,42,.6),transparent)}
+.board-calc{background:linear-gradient(180deg,var(--surface-soft-2),transparent)}
 .calc-box{
   display:grid; grid-template-columns:repeat(3,1fr) auto; gap:18px; align-items:end;
-  border:1px solid var(--line); border-radius:16px; padding:26px 28px; max-width:900px;
+  border:var(--border-w) solid var(--line); border-radius:var(--radius-card); padding:26px 28px; max-width:900px;
 }
 .calc-field{display:grid; gap:7px}
 .calc-field label{font-family:var(--struct); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--peri)}
 .calc-field input{
   font-family:var(--body); font-size:1.05rem; color:var(--bone); background:var(--ink-2);
-  border:1px solid var(--line-2); border-radius:10px; padding:10px 13px; width:100%;
+  border:var(--border-w) solid var(--line-2); border-radius:var(--radius-input); padding:10px 13px; width:100%;
 }
 .calc-result{font-family:var(--struct)}
 .calc-result .cr-margin{font-size:2rem; font-weight:700; background:var(--iri); -webkit-background-clip:text; background-clip:text; color:transparent; line-height:1}
