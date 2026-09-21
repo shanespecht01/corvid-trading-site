@@ -68,12 +68,27 @@ section in `index.html`, and the `<link>`/`<script>` tags pointing at
 
 ## Theme explorations (experimental)
 
-Six alternate looks for the site, so a direction can be picked by seeing it
-rather than describing it. Add `?themes=1` to any URL for the picker, or
-`?theme=<slug>` to jump straight into one:
-`sea-glass`, `nest-kraft`, `studio-daylight`, `oil-slick`, `ink-brass`,
-`night-market`. A pick is remembered in `localStorage` — **per device**, and
-it changes nothing for anyone else.
+Alternate looks for the site, so a direction can be picked by seeing it
+rather than describing it. Add `?themes=1` to any URL for the picker. Three
+independent axes, which compose in any combination:
+
+| Axis | Param | Values |
+|---|---|---|
+| Colour | `?theme=` | `sea-glass`, `nest-kraft`, `studio-daylight`, `oil-slick`, `ink-brass`, `night-market` |
+| Layout | `?layout=` | `workbench`, `broadside`, `market-stall` |
+| Hand | `?hand=` | `subtle`, `pronounced` |
+
+Picks are remembered in `localStorage` — **per device**, changing nothing for
+anyone else. Colour lives in `css/themes.css`; layout and hand in
+`css/layouts.css`, which changes no HTML at all — it restructures the
+existing markup via grid spans, offsets and pseudo-elements, so any of it
+can be thrown away without unpicking the page.
+
+Two gotchas worth knowing before editing `layouts.css`: `.reveal` animates
+`transform` and sets `transform:none` when it fires, so rotations/offsets
+there use the **independent** `rotate:`/`translate:` properties instead;
+and structural changes are gated to `min-width:961px` because the phone
+layout is already a single column.
 
 How it works: `css/styles.css` `:root` now holds tokens for colour, surface,
 radius, border, texture and type. `css/themes.css` overrides only those

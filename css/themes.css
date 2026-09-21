@@ -210,7 +210,16 @@ html[data-theme="night-market"]{
 }
 .theme-picker h4{margin:0 0 2px; font-size:13px; font-weight:600; letter-spacing:.01em}
 .theme-picker .tp-note{margin:0 0 10px; font-size:11px; line-height:1.45; color:#9aa0b8}
+.theme-picker .tp-body{max-height:min(74vh,600px); overflow:auto; margin:0 -4px; padding:0 4px}
+.theme-picker .tp-group{
+  margin:12px 0 5px; font-size:9.5px; font-weight:600; letter-spacing:.18em;
+  text-transform:uppercase; color:#727892;
+}
+.theme-picker .tp-group:first-of-type{margin-top:0}
 .theme-picker ul{list-style:none; margin:0; padding:0; display:grid; gap:5px}
+.theme-picker .tp-sw-none{
+  background:repeating-linear-gradient(45deg,rgba(255,255,255,.1) 0 3px,transparent 3px 6px);
+}
 .theme-picker button.tp-opt{
   width:100%; display:flex; align-items:center; gap:9px; cursor:pointer; text-align:left;
   background:transparent; border:1px solid transparent; border-radius:9px;
