@@ -1,0 +1,236 @@
+/* ================================================================
+   THEME EXPLORATIONS — six alternate skins for the site.
+
+   Each block below only overrides tokens defined in css/styles.css
+   :root. No layout, no new rules — if a theme needs a value that
+   isn't a token yet, add the token in styles.css first.
+
+   Applied by js/themes.js, which sets data-theme on <html>.
+   The picker UI appears with ?themes=1 in the URL.
+   ================================================================ */
+
+/* ---------- 1. SEA GLASS — light, tumbled beach glass ---------- */
+html[data-theme="sea-glass"]{
+  --ink:#f4efe6; --ink-2:#fbf8f2; --ink-3:#efe8dc;
+  --line:rgba(58,90,84,.16); --line-2:rgba(58,90,84,.32);
+  --cobalt:#2f7d6e; --blue:#4d9c86; --peri:#2f7d6e;
+  --violet:#b4713a; --amethyst:#d79a54; --indigo:#cfe0d8;
+  --bone:#22302c; --muted:#5d6b64; --muted-2:#8a958e;
+  --iri:linear-gradient(115deg,#1f5f53 0%,#2f7d6e 50%,#8a5a2a 100%);
+  --serif:"Fraunces",Georgia,serif;
+  --struct:"Karla",system-ui,sans-serif;
+  --body:"Karla",system-ui,sans-serif;
+  --bg-field:
+    radial-gradient(60vw 60vw at 82% -8%, rgba(47,125,110,.13), transparent 60%),
+    radial-gradient(50vw 50vw at -5% 20%, rgba(215,154,84,.12), transparent 60%),
+    radial-gradient(55vw 45vw at 60% 108%, rgba(90,168,141,.10), transparent 60%);
+  --nav-bg:rgba(244,239,230,.84);
+  --surface-card:linear-gradient(180deg,#fbf8f2,#f5f0e6);
+  --surface-soft:rgba(255,255,255,.5); --surface-soft-2:rgba(255,255,255,.62);
+  --surface-tint:rgba(47,125,110,.09);
+  --accent-soft:rgba(47,125,110,.13); --accent-soft-2:rgba(47,125,110,.07);
+  --input-bg:#fbf8f2; --input-focus-bg:#ffffff;
+  --text-lede:#3c4a45; --text-story:#3c4a45;
+  --ph-gradient:linear-gradient(135deg,rgba(47,125,110,.32),rgba(215,154,84,.26) 60%,rgba(90,168,141,.2));
+  --shadow-btn:0 8px 20px -10px rgba(47,125,110,.55);
+  --shadow-btn-hover:0 14px 28px -10px rgba(47,125,110,.6);
+  --shadow-card:0 2px 12px rgba(58,90,84,.07);
+  --feather-glow:drop-shadow(0 18px 34px rgba(58,90,84,.22));
+  --on-accent:#fbf8f2; --btn-primary-bg:#1f5f53;
+  --radius-card:22px; --radius-tile:20px; --radius-lg:26px; --radius-input:14px; --radius-sm:12px;
+  --eyebrow-tracking:.18em;
+}
+
+/* ---------- 2. NEST & KRAFT — paper, twig, rust, brass ---------- */
+html[data-theme="nest-kraft"]{
+  --ink:#e8dfd0; --ink-2:#f2ebdf; --ink-3:#ddd2c0;
+  --line:rgba(60,48,36,.2); --line-2:rgba(60,48,36,.38);
+  --cobalt:#5a6b3f; --blue:#6e8050; --peri:#6b5138;
+  --violet:#a8482a; --amethyst:#b8862f; --indigo:#d8cbb4;
+  --bone:#2b2218; --muted:#6b5f50; --muted-2:#8c7f6d;
+  --iri:linear-gradient(115deg,#46552f 0%,#8f3c22 55%,#7d5a1c 100%);
+  --serif:"Bitter",Georgia,serif;
+  --struct:"Space Mono",ui-monospace,monospace;
+  --body:"Work Sans",system-ui,sans-serif;
+  --nav-size:11.5px; --nav-gap:22px;
+  --bg-field:
+    radial-gradient(60vw 60vw at 82% -8%, rgba(90,107,63,.12), transparent 60%),
+    radial-gradient(50vw 50vw at -5% 20%, rgba(168,72,42,.09), transparent 60%);
+  --texture:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
+  --nav-bg:rgba(232,223,208,.88);
+  --surface-card:linear-gradient(180deg,#f2ebdf,#ece3d3);
+  --surface-soft:rgba(255,252,245,.5); --surface-soft-2:rgba(255,252,245,.6);
+  --surface-tint:rgba(90,107,63,.1);
+  --accent-soft:rgba(168,72,42,.12); --accent-soft-2:rgba(90,107,63,.08);
+  --input-bg:#f2ebdf; --input-focus-bg:#fffdf7;
+  --text-lede:#453829; --text-story:#453829;
+  --ph-gradient:linear-gradient(135deg,rgba(90,107,63,.3),rgba(168,72,42,.24) 60%,rgba(184,134,47,.22));
+  --shadow-btn:none; --shadow-btn-hover:0 6px 14px -8px rgba(60,48,36,.5);
+  --shadow-card:0 1px 0 rgba(60,48,36,.1);
+  --feather-glow:drop-shadow(0 16px 30px rgba(60,48,36,.25));
+  --on-accent:#f7f2e8; --btn-primary-bg:#8f3c22;
+  --radius-btn:4px; --radius-card:6px; --radius-tile:4px; --radius-lg:8px; --radius-input:4px; --radius-sm:3px;
+  --card-lift:-2px;
+  --eyebrow-tracking:.16em;
+}
+
+/* ---------- 3. STUDIO DAYLIGHT — bright editorial lookbook ---------- */
+html[data-theme="studio-daylight"]{
+  --ink:#faf8f5; --ink-2:#ffffff; --ink-3:#f2efe9;
+  --line:rgba(28,26,32,.13); --line-2:rgba(28,26,32,.26);
+  --cobalt:#5b3fd6; --blue:#6d55e0; --peri:#5b3fd6;
+  --violet:#7c4fe0; --amethyst:#9b78ea; --indigo:#e4dcfa;
+  --bone:#1c1a20; --muted:#5a5762; --muted-2:#8b8794;
+  --iri:linear-gradient(115deg,#4b2fc4 0%,#6d3fd0 50%,#8a5fd6 100%);
+  --serif:"Instrument Serif",Georgia,serif;
+  --struct:"Inter",system-ui,sans-serif;
+  --body:"Inter",system-ui,sans-serif;
+  --bg-field:radial-gradient(70vw 50vw at 88% -12%, rgba(91,63,214,.08), transparent 62%);
+  --nav-bg:rgba(250,248,245,.86);
+  --surface-card:linear-gradient(180deg,#ffffff,#fbfaf8);
+  --surface-soft:rgba(255,255,255,.7); --surface-soft-2:rgba(255,255,255,.8);
+  --surface-tint:rgba(91,63,214,.06);
+  --accent-soft:rgba(91,63,214,.1); --accent-soft-2:rgba(91,63,214,.05);
+  --input-bg:#ffffff; --input-focus-bg:#ffffff;
+  --text-lede:#3a3743; --text-story:#3a3743;
+  --ph-gradient:linear-gradient(135deg,rgba(91,63,214,.22),rgba(155,120,234,.18) 60%,rgba(180,140,230,.14));
+  --shadow-btn:none; --shadow-btn-hover:none;
+  --shadow-card:none;
+  --feather-glow:drop-shadow(0 20px 40px rgba(60,40,120,.18));
+  --on-accent:#ffffff; --btn-primary-bg:#4b2fc4;
+  --radius-btn:2px; --radius-card:2px; --radius-tile:2px; --radius-lg:2px; --radius-input:2px; --radius-sm:2px;
+  --card-lift:-2px;
+  --display-weight:400; --h1-tracking:-.02em;
+  --eyebrow-size:11px; --eyebrow-tracking:.2em; --eyebrow-rule:34px;
+}
+
+/* ---------- 4. OIL SLICK — dark plum, glassy pebbles ---------- */
+html[data-theme="oil-slick"]{
+  --ink:#120d18; --ink-2:#1b1424; --ink-3:#0e0a13;
+  --line:rgba(226,180,255,.14); --line-2:rgba(226,180,255,.3);
+  --cobalt:#7b3fd4; --blue:#a45ce0; --peri:#c89ae8;
+  --violet:#d95f9a; --amethyst:#f0a6c8; --indigo:#2a1c3a;
+  --bone:#f2e9f5; --muted:#b5a3bf; --muted-2:#8b7d95;
+  --iri:linear-gradient(115deg,#3fb0c9 0%,#7b3fd4 40%,#d95f9a 74%,#f0c36a 100%);
+  --bg-field:
+    radial-gradient(60vw 60vw at 82% -8%, rgba(123,63,212,.24), transparent 60%),
+    radial-gradient(50vw 50vw at -5% 20%, rgba(217,95,154,.16), transparent 60%),
+    radial-gradient(55vw 45vw at 60% 108%, rgba(63,176,201,.12), transparent 60%);
+  --nav-bg:rgba(18,13,24,.74);
+  --surface-card:linear-gradient(180deg,rgba(62,42,86,.5),rgba(30,20,42,.55));
+  --surface-soft:rgba(46,30,64,.42); --surface-soft-2:rgba(46,30,64,.5);
+  --surface-tint:rgba(168,92,224,.12);
+  --accent-soft:rgba(168,92,224,.18); --accent-soft-2:rgba(200,154,232,.08);
+  --input-bg:#1b1424; --input-focus-bg:#241a30;
+  --text-lede:#dccbe4; --text-story:#dccbe4;
+  --ph-gradient:linear-gradient(135deg,rgba(63,176,201,.32),rgba(123,63,212,.3) 55%,rgba(217,95,154,.26));
+  --shadow-btn:0 8px 26px -10px rgba(190,90,220,.7);
+  --shadow-btn-hover:0 16px 36px -10px rgba(217,95,154,.75);
+  --shadow-card:0 18px 40px -26px rgba(180,80,220,.5);
+  --feather-glow:drop-shadow(0 26px 54px rgba(200,90,220,.4));
+  --on-accent:#120d18;
+  --radius-btn:999px; --radius-card:28px; --radius-tile:24px; --radius-lg:32px; --radius-input:18px; --radius-sm:14px;
+  --card-lift:-6px;
+  --eyebrow-tracking:.2em;
+}
+
+/* ---------- 5. INK & BRASS — letterpress, warm black, brass ---------- */
+html[data-theme="ink-brass"]{
+  --ink:#14110d; --ink-2:#1e1a14; --ink-3:#100e0a;
+  --line:rgba(220,180,110,.17); --line-2:rgba(220,180,110,.34);
+  --cobalt:#c08a34; --blue:#d9a441; --peri:#d9a441;
+  --violet:#a8532a; --amethyst:#e0bb6a; --indigo:#2a2119;
+  --bone:#f2ece0; --muted:#b0a38c; --muted-2:#857a67;
+  --iri:linear-gradient(115deg,#a8532a 0%,#c08a34 45%,#e0bb6a 100%);
+  --serif:"Zilla Slab",Georgia,serif;
+  --struct:"Space Mono",ui-monospace,monospace;
+  --body:"Karla",system-ui,sans-serif;
+  --nav-size:11.5px; --nav-gap:22px;
+  --bg-field:
+    radial-gradient(60vw 60vw at 82% -8%, rgba(192,138,52,.14), transparent 60%),
+    radial-gradient(50vw 50vw at -5% 20%, rgba(168,83,42,.1), transparent 60%);
+  --texture:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+  --nav-bg:rgba(20,17,13,.8);
+  --surface-card:linear-gradient(180deg,rgba(38,32,24,.8),rgba(22,19,14,.8));
+  --surface-soft:rgba(34,29,21,.45); --surface-soft-2:rgba(34,29,21,.55);
+  --surface-tint:rgba(217,164,65,.1);
+  --accent-soft:rgba(217,164,65,.15); --accent-soft-2:rgba(217,164,65,.07);
+  --input-bg:#1e1a14; --input-focus-bg:#262017;
+  --text-lede:#ded4c2; --text-story:#ded4c2;
+  --ph-gradient:linear-gradient(135deg,rgba(168,83,42,.34),rgba(192,138,52,.28) 60%,rgba(224,187,106,.22));
+  --shadow-btn:none; --shadow-btn-hover:0 8px 18px -10px rgba(217,164,65,.6);
+  --shadow-card:none;
+  --feather-glow:drop-shadow(0 22px 44px rgba(150,100,30,.35));
+  --on-accent:#14110d;
+  --radius-btn:2px; --radius-card:3px; --radius-tile:2px; --radius-lg:4px; --radius-input:2px; --radius-sm:2px;
+  --card-lift:-2px;
+  --eyebrow-tracking:.22em;
+}
+
+/* ---------- 6. NIGHT MARKET — charcoal-green, candlelit gold ---------- */
+html[data-theme="night-market"]{
+  --ink:#0f1512; --ink-2:#17201b; --ink-3:#0b100d;
+  --line:rgba(226,196,124,.15); --line-2:rgba(226,196,124,.3);
+  --cobalt:#3f8f6a; --blue:#57a87e; --peri:#e2c47c;
+  --violet:#d2803c; --amethyst:#edc57a; --indigo:#1d2a22;
+  --bone:#f0ece1; --muted:#a8b0a2; --muted-2:#7d857a;
+  --iri:linear-gradient(115deg,#5fb98d 0%,#e0954a 55%,#edc57a 100%);
+  --serif:"Newsreader",Georgia,serif;
+  --bg-field:
+    radial-gradient(60vw 60vw at 82% -8%, rgba(63,143,106,.18), transparent 60%),
+    radial-gradient(50vw 50vw at -5% 20%, rgba(210,128,60,.14), transparent 60%),
+    radial-gradient(55vw 45vw at 60% 108%, rgba(237,197,122,.09), transparent 60%);
+  --nav-bg:rgba(15,21,18,.8);
+  --surface-card:linear-gradient(180deg,rgba(30,42,34,.7),rgba(16,23,18,.7));
+  --surface-soft:rgba(28,38,31,.45); --surface-soft-2:rgba(28,38,31,.55);
+  --surface-tint:rgba(63,143,106,.12);
+  --accent-soft:rgba(226,196,124,.14); --accent-soft-2:rgba(226,196,124,.07);
+  --input-bg:#17201b; --input-focus-bg:#1e2a22;
+  --text-lede:#d8dbcf; --text-story:#d8dbcf;
+  --ph-gradient:linear-gradient(135deg,rgba(63,143,106,.34),rgba(210,128,60,.28) 60%,rgba(237,197,122,.22));
+  --shadow-btn:0 8px 22px -10px rgba(226,196,124,.5);
+  --shadow-btn-hover:0 14px 30px -10px rgba(210,128,60,.6);
+  --shadow-card:0 14px 34px -26px rgba(226,196,124,.4);
+  --feather-glow:drop-shadow(0 24px 48px rgba(60,120,90,.4));
+  --on-accent:#0f1512;
+  --radius-card:20px; --radius-tile:18px; --radius-lg:24px; --radius-input:14px; --radius-sm:12px;
+  --card-lift:-5px;
+  --eyebrow-tracking:.2em;
+}
+
+/* ================================================================
+   The picker UI itself. Deliberately NOT themed — it keeps its own
+   fixed colors so it stays readable on top of every theme.
+   ================================================================ */
+.theme-picker{
+  position:fixed; right:18px; bottom:18px; z-index:90; width:250px;
+  background:#0d1017; color:#eceaf2; border:1px solid rgba(255,255,255,.18);
+  border-radius:14px; padding:14px; font-family:system-ui,sans-serif; font-size:13px;
+  box-shadow:0 24px 60px -20px rgba(0,0,0,.8);
+}
+.theme-picker h4{margin:0 0 2px; font-size:13px; font-weight:600; letter-spacing:.01em}
+.theme-picker .tp-note{margin:0 0 10px; font-size:11px; line-height:1.45; color:#9aa0b8}
+.theme-picker ul{list-style:none; margin:0; padding:0; display:grid; gap:5px}
+.theme-picker button.tp-opt{
+  width:100%; display:flex; align-items:center; gap:9px; cursor:pointer; text-align:left;
+  background:transparent; border:1px solid transparent; border-radius:9px;
+  padding:7px 8px; color:#eceaf2; font:inherit;
+}
+.theme-picker button.tp-opt:hover{background:rgba(255,255,255,.07)}
+.theme-picker button.tp-opt[aria-current="true"]{border-color:#8ea2e6; background:rgba(142,162,230,.14)}
+.theme-picker .tp-sw{width:26px; height:16px; border-radius:4px; flex:none; border:1px solid rgba(255,255,255,.22)}
+.theme-picker .tp-name{flex:1; min-width:0}
+.theme-picker .tp-name b{display:block; font-weight:600}
+.theme-picker .tp-name span{display:block; font-size:10.5px; color:#9aa0b8}
+.theme-picker .tp-close{
+  position:absolute; top:10px; right:10px; background:none; border:none; color:#9aa0b8;
+  cursor:pointer; font-size:15px; line-height:1; padding:2px;
+}
+.theme-picker .tp-close:hover{color:#eceaf2}
+.theme-picker.tp-collapsed{width:auto; padding:9px 13px}
+.theme-picker.tp-collapsed > :not(.tp-reopen){display:none}
+.theme-picker .tp-reopen{display:none; background:none; border:none; color:#eceaf2; font:inherit; cursor:pointer}
+.theme-picker.tp-collapsed .tp-reopen{display:block}
+@media (max-width:640px){
+  .theme-picker{left:12px; right:12px; bottom:12px; width:auto}
+}

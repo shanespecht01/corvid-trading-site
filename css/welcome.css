@@ -6,8 +6,8 @@
    #welcomeBanner section in index.html for the full removal steps.
    ================================================================ */
 .welcome-banner{
-  background:linear-gradient(180deg, rgba(138,99,212,.12), transparent);
-  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, var(--accent-soft), transparent);
+  border-bottom:var(--border-w) solid var(--line);
 }
 .welcome-in{
   display:flex; align-items:center; gap:32px;
@@ -17,7 +17,7 @@
 .welcome-feather img{width:100%; height:auto; display:block}
 .welcome-copy{flex:1 1 320px; min-width:0}
 .welcome-copy h2{
-  font-family:var(--serif); font-weight:500;
+  font-family:var(--serif); font-weight:var(--display-weight);
   font-size:clamp(1.5rem,3vw,2.1rem); margin:.3em 0 0;
 }
 .welcome-copy p{color:var(--muted); margin:.6em 0 0; max-width:62ch}
@@ -32,7 +32,7 @@
 }
 .welcome-edit-fields input{
   font-family:var(--body); font-size:.95rem; color:var(--bone); background:var(--ink-2);
-  border:1px solid var(--line-2); border-radius:8px; padding:9px 12px; text-transform:none; letter-spacing:normal;
+  border:var(--border-w) solid var(--line-2); border-radius:var(--radius-sm); padding:9px 12px; text-transform:none; letter-spacing:normal;
 }
 @media (max-width:640px){
   .welcome-in{padding-block:26px}

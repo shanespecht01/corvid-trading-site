@@ -66,6 +66,35 @@ section in `index.html`, and the `<link>`/`<script>` tags pointing at
 `boards/` is staying). Full step-by-step is in the comment block above
 `#welcomeBanner` in `index.html`.
 
+## Theme explorations (experimental)
+
+Six alternate looks for the site, so a direction can be picked by seeing it
+rather than describing it. Add `?themes=1` to any URL for the picker, or
+`?theme=<slug>` to jump straight into one:
+`sea-glass`, `nest-kraft`, `studio-daylight`, `oil-slick`, `ink-brass`,
+`night-market`. A pick is remembered in `localStorage` — **per device**, and
+it changes nothing for anyone else.
+
+How it works: `css/styles.css` `:root` now holds tokens for colour, surface,
+radius, border, texture and type. `css/themes.css` overrides only those
+tokens per theme — no layout rules, no duplicated CSS. `js/themes.js` sets
+`data-theme` on `<html>` before first paint and loads a theme's Google Fonts
+only when that theme is actually used, so normal visitors pay nothing.
+
+**Adding a token:** if a theme needs a value that's still hardcoded, add the
+token to `:root` in `styles.css` (default = today's look) and reference it —
+don't put raw colours in the rules.
+
+**Making a theme the real default:** fold its token block into `:root` in
+`styles.css`, move its fonts into the `<head>` font link, then delete
+`css/themes.css`, `js/themes.js`, and their tags in `index.html` +
+`boards/*.html`. Nothing else references them.
+
+**Note:** several of these deliberately break the "dark, restrained,
+jewel-toned" rule in the brand doc — that's the point of the exercise. If a
+light theme wins, update the `corvid-trading` skill's `design-system.md` to
+match, or the two will disagree.
+
 ## Client idea boards
 
 A per-client "idea board" is a small branded page — like a mini pitch deck —
