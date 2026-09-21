@@ -53,6 +53,20 @@
     }
   ];
 
+  // Structure and imperfection are separate axes from colour — see
+  // css/layouts.css. Any combination composes.
+  var LAYOUTS = [
+    { slug: '', name: 'Uniform', blurb: 'Even grids — the current layout' },
+    { slug: 'workbench', name: 'Workbench', blurb: 'Uneven sizes, staggered, off-rail' },
+    { slug: 'broadside', name: 'Broadside', blurb: 'Letterpress: ruled, numbered, type-led' },
+    { slug: 'market-stall', name: 'Market Stall', blurb: 'Layered, overlapping, full-bleed bands' }
+  ];
+  var HANDS = [
+    { slug: '', name: 'None', blurb: 'Machine-straight' },
+    { slug: 'subtle', name: 'Subtle', blurb: 'Slight tilts, uneven corners' },
+    { slug: 'pronounced', name: 'Pronounced', blurb: 'Tape, stitching, deckled edges, a stamp' }
+  ];
+
   var params = new URLSearchParams(window.location.search);
 
   // Works from both / and /boards/ — derive the site root from this script's
@@ -61,7 +75,7 @@
     .replace(/js\/themes\.js(?:\?.*)?$/, '');
 
   function featherUrl(slug) {
-    return ROOT + 'assets/feather-' + slug + '.svg';
+    return ROOT + 'assets/feather-' + (slug || 'mark') + '.svg';
   }
 
   // Each theme has its own feather, recolored from the linework source with
@@ -69,6 +83,10 @@
   var heroCache = {};
 
   function applyFeather(slug) {
+    // market-stall uses the active feather as a background peeking out
+    // from behind sections, so keep a CSS-visible copy of the URL
+    document.documentElement.style.setProperty('--feather-url', 'url("' + featherUrl(slug) + '")');
+
     // static marks: nav, story, footer, the board pages, the welcome banner
     document.querySelectorAll('img.mark, .welcome-feather img').forEach(function (img) {
       if (!img.getAttribute('data-feather-orig')) {
@@ -141,6 +159,30 @@
     document.addEventListener('DOMContentLoaded', function () { applyFeather(active); }, { once: true });
   }
 
+  // ---- the other two axes: structure and imperfection ----
+  function axis(key, storeKey, list) {
+    function valid(v) {
+      for (var i = 0; i < list.length; i++) if (list[i].slug === v) return v;
+      return '';
+    }
+    function get() {
+      try { return valid(localStorage.getItem(storeKey) || ''); } catch (e) { return ''; }
+    }
+    function set(v) {
+      v = valid(v);
+      try { v ? localStorage.setItem(storeKey, v) : localStorage.removeItem(storeKey); } catch (e) {}
+      if (v) document.documentElement.setAttribute('data-' + key, v);
+      else document.documentElement.removeAttribute('data-' + key);
+      return v;
+    }
+    var initial = params.get(key) !== null ? valid(params.get(key)) : get();
+    set(initial);
+    return { get: function () { return valid(document.documentElement.getAttribute('data-' + key) || ''); }, set: set };
+  }
+
+  var layout = axis('layout', 'corvid-layout', LAYOUTS);
+  var hand = axis('hand', 'corvid-hand', HANDS);
+
   if (params.get('themes') === null) return;
 
   // ---- picker UI (only with ?themes=1) ----
@@ -153,13 +195,11 @@
       '<h4>Try a look</h4>' +
       '<p class="tp-note">Previewing on this device only — nothing changes for anyone else. ' +
       'Tell Shane which one you like and he’ll make it real.</p>' +
-      '<ul>' + THEMES.map(function (t) {
-        return '<li><button type="button" class="tp-opt" data-slug="' + t.slug + '"' +
-          (t.slug === active ? ' aria-current="true"' : '') + '>' +
-          '<span class="tp-sw" style="background:' + t.swatch + '"></span>' +
-          '<span class="tp-name"><b>' + t.name + '</b><span>' + t.blurb + '</span></span>' +
-          '</button></li>';
-      }).join('') + '</ul>';
+      '<div class="tp-body">' +
+        group('theme', 'Colour', THEMES, active) +
+        group('layout', 'Layout', LAYOUTS, layout.get()) +
+        group('hand', 'Hand', HANDS, hand.get()) +
+      '</div>';
     // on a phone the open panel covers most of the page — start it out of
     // the way, one tap from opening
     if (window.innerWidth < 640) box.classList.add('tp-collapsed');
@@ -171,13 +211,28 @@
       if (e.target.closest('.tp-reopen')) { box.classList.remove('tp-collapsed'); return; }
       var opt = e.target.closest('.tp-opt');
       if (!opt) return;
-      active = apply(opt.getAttribute('data-slug'));
-      write(active);
-      box.querySelectorAll('.tp-opt').forEach(function (b) {
-        if (b.getAttribute('data-slug') === active) b.setAttribute('aria-current', 'true');
+      var axisName = opt.getAttribute('data-axis');
+      var slug = opt.getAttribute('data-slug');
+
+      if (axisName === 'theme') { active = apply(slug); write(active); slug = active; }
+      if (axisName === 'layout') slug = layout.set(slug);
+      if (axisName === 'hand') slug = hand.set(slug);
+
+      box.querySelectorAll('.tp-opt[data-axis="' + axisName + '"]').forEach(function (b) {
+        if (b.getAttribute('data-slug') === slug) b.setAttribute('aria-current', 'true');
         else b.removeAttribute('aria-current');
       });
     });
+  }
+
+  function group(axisName, label, list, current) {
+    return '<h5 class="tp-group">' + label + '</h5><ul>' + list.map(function (t) {
+      return '<li><button type="button" class="tp-opt" data-axis="' + axisName + '" data-slug="' + t.slug + '"' +
+        (t.slug === current ? ' aria-current="true"' : '') + '>' +
+        (t.swatch ? '<span class="tp-sw" style="background:' + t.swatch + '"></span>' : '<span class="tp-sw tp-sw-none"></span>') +
+        '<span class="tp-name"><b>' + t.name + '</b><span>' + t.blurb + '</span></span>' +
+        '</button></li>';
+    }).join('') + '</ul>';
   }
 
   if (document.readyState === 'loading') {

@@ -1,0 +1,229 @@
+/* ================================================================
+   LAYOUT + HAND EXPLORATIONS
+
+   Two axes, independent of the six colour themes in themes.css, and
+   independent of each other. Applied by js/themes.js as attributes on
+   <html>:
+
+     data-layout = workbench | broadside | market-stall   (structure)
+     data-hand   = subtle | pronounced                    (imperfection)
+
+   Neither changes the HTML — everything here works off the existing
+   markup, so any combination can be previewed and thrown away.
+
+   TWO CONSTRAINTS WORTH KNOWING BEFORE EDITING:
+   1. `.reveal` animates `transform`, and `.reveal.in` sets
+      `transform:none` — so a rotation written as `transform:rotate()`
+      gets wiped the moment a card scrolls into view. Everything here
+      uses the INDEPENDENT `rotate:` / `translate:` properties instead,
+      which compose with `transform` rather than replacing it.
+   2. Structure changes are gated to wide viewports. On a phone the
+      single-column stack is already the right answer, and staggering
+      or spanning it just makes a mess.
+   ================================================================ */
+
+
+/* ================================================================
+   1. WORKBENCH — things laid out on a bench: uneven sizes, staggered,
+   nothing quite lining up. Structure only; texture comes from `hand`.
+   ================================================================ */
+@media (min-width:961px){
+  /* "What we source" — 8 cards on a 6-col grid: 2 wide, 3 narrow,
+     2 wide, then one full-width finisher */
+  html[data-layout="workbench"] .grid-3{
+    grid-template-columns:repeat(6,1fr); align-items:start; gap:22px;
+  }
+  html[data-layout="workbench"] .grid-3 > .card{grid-column:span 2}
+  html[data-layout="workbench"] .grid-3 > .card:nth-child(1),
+  html[data-layout="workbench"] .grid-3 > .card:nth-child(2),
+  html[data-layout="workbench"] .grid-3 > .card:nth-child(6),
+  html[data-layout="workbench"] .grid-3 > .card:nth-child(7){grid-column:span 3}
+  html[data-layout="workbench"] .grid-3 > .card:nth-child(8){grid-column:span 6}
+  /* stagger — offsets, not margins, so .reveal keeps its transform */
+  html[data-layout="workbench"] .grid-3 > .card:nth-child(2){translate:0 34px}
+  html[data-layout="workbench"] .grid-3 > .card:nth-child(4){translate:0 18px}
+  html[data-layout="workbench"] .grid-3 > .card:nth-child(5){translate:0 40px}
+  html[data-layout="workbench"] .grid-3 > .card:nth-child(7){translate:0 22px}
+
+  /* verticals — uneven columns instead of five identical ones */
+  html[data-layout="workbench"] .verticals{grid-template-columns:1.45fr 1fr 1fr 1.3fr .95fr; align-items:start}
+  html[data-layout="workbench"] .vert:nth-child(2){translate:0 26px}
+  html[data-layout="workbench"] .vert:nth-child(4){translate:0 14px}
+
+  /* goods — one lead piece, three smaller */
+  html[data-layout="workbench"] .goods-grid{grid-template-columns:repeat(5,1fr); align-items:start}
+  html[data-layout="workbench"] .good:nth-child(1){grid-column:span 2}
+  html[data-layout="workbench"] .good:nth-child(3){translate:0 24px}
+
+  /* steps — let the rhythm drift */
+  html[data-layout="workbench"] .step:nth-child(2){translate:0 20px}
+  html[data-layout="workbench"] .step:nth-child(4){translate:0 12px}
+
+  /* section heads stop marching down the same centre rail */
+  html[data-layout="workbench"] #verticals .sec-head,
+  html[data-layout="workbench"] #goods .sec-head{margin-left:auto; text-align:right}
+  html[data-layout="workbench"] #verticals .sec-head .eyebrow,
+  html[data-layout="workbench"] #goods .sec-head .eyebrow{flex-direction:row-reverse}
+  html[data-layout="workbench"] #process .sec-head{margin-left:12%}
+
+  /* uneven vertical rhythm (not #verticals — it carries an inline
+     padding-top:0 that we shouldn't fight) */
+  html[data-layout="workbench"] #process{padding-block:clamp(80px,11vw,150px)}
+  html[data-layout="workbench"] #difference{padding-block:clamp(48px,6vw,88px)}
+  html[data-layout="workbench"] #faq{padding-block:clamp(72px,10vw,132px)}
+}
+
+
+/* ================================================================
+   2. BROADSIDE — a letterpress broadside: type-forward, ruled, numbered.
+   Cards stop being boxes and become entries in a printed list.
+   ================================================================ */
+html[data-layout="broadside"] .card{
+  background:none; box-shadow:none; border:none; border-top:2px solid var(--line-2);
+  border-radius:0; padding:20px 0 0; overflow:visible;
+}
+html[data-layout="broadside"] .card::before{display:none}
+html[data-layout="broadside"] .card:hover{translate:0 -2px; transform:none}
+html[data-layout="broadside"] .card .ic{width:22px; height:22px; margin-bottom:12px; opacity:.8}
+html[data-layout="broadside"] .grid-3{counter-reset:bs}
+html[data-layout="broadside"] .grid-3 > .card{counter-increment:bs}
+html[data-layout="broadside"] .grid-3 > .card h3::before{
+  content:counter(bs,decimal-leading-zero);
+  font-family:var(--struct); font-size:.62em; letter-spacing:.14em;
+  color:var(--muted-2); margin-right:.9em; vertical-align:.18em;
+}
+html[data-layout="broadside"] .sec-head{
+  border-bottom:3px double var(--line-2); padding-bottom:18px; max-width:none;
+}
+html[data-layout="broadside"] .sec-head h2{
+  font-size:clamp(2.4rem,6.2vw,4.6rem); line-height:.98; letter-spacing:-.02em; max-width:18ch;
+}
+html[data-layout="broadside"] .hero p.lede::first-letter{
+  float:left; font-family:var(--serif); font-size:3.3em; line-height:.78;
+  padding:.08em .12em 0 0; font-weight:var(--display-weight);
+}
+/* the index-style vertical list: name in one column, note in the next */
+html[data-layout="broadside"] .verticals{grid-template-columns:1fr; gap:0}
+html[data-layout="broadside"] .vert{
+  background:none; border:none; border-top:1px solid var(--line); border-radius:0;
+  padding:20px 0; display:grid; grid-template-columns:minmax(0,24ch) 1fr; gap:28px; align-items:baseline;
+}
+html[data-layout="broadside"] .vert:hover{background:none}
+html[data-layout="broadside"] .vert .vn{font-size:1.15rem}
+html[data-layout="broadside"] .vert p{margin:0}
+html[data-layout="broadside"] .step .n{font-size:3.6rem}
+html[data-layout="broadside"] .good{background:none; border:none; border-radius:0}
+html[data-layout="broadside"] .good .ph{border-radius:0}
+html[data-layout="broadside"] .good .gm{padding:14px 0 0}
+html[data-layout="broadside"] #faq summary{font-family:var(--serif); font-size:1.35rem; font-weight:var(--display-weight)}
+html[data-layout="broadside"] .form-aside{border-radius:0; border-width:2px}
+@media (min-width:961px){
+  html[data-layout="broadside"] .grid-3{grid-template-columns:repeat(2,1fr); column-gap:60px; row-gap:34px}
+  html[data-layout="broadside"] .goods-grid{grid-template-columns:repeat(2,1fr); gap:44px}
+  /* let the big headline hang past the text rail, the way a poster does */
+  html[data-layout="broadside"] .sec-head h2{margin-left:-.055em}
+}
+
+
+/* ================================================================
+   3. MARKET STALL — goods piled on a stall: full-bleed bands, cards
+   that overlap their neighbours, the feather peeking out from behind.
+   ================================================================ */
+/* alternating full-bleed colour bands (sections are already
+   position:relative, and .wrap sits at z-index:1 above this) */
+html[data-layout="market-stall"] section:nth-of-type(even)::before{
+  content:""; position:absolute; inset:0; background:var(--surface-soft); z-index:0;
+}
+html[data-layout="market-stall"] .card,
+html[data-layout="market-stall"] .good,
+html[data-layout="market-stall"] .vert{box-shadow:0 18px 40px -28px rgba(0,0,0,.75)}
+@media (min-width:961px){
+  /* interlock the cards so they overlap rather than sit in tidy rows */
+  html[data-layout="market-stall"] .grid-3{gap:14px; align-items:start}
+  html[data-layout="market-stall"] .grid-3 > .card:nth-child(even){translate:0 -30px; z-index:2}
+  html[data-layout="market-stall"] .grid-3 > .card:nth-child(3n){translate:-14px 16px; z-index:3}
+  html[data-layout="market-stall"] .verticals{gap:10px}
+  html[data-layout="market-stall"] .vert:nth-child(odd){translate:0 -18px}
+  html[data-layout="market-stall"] .goods-grid{gap:12px; align-items:start}
+  html[data-layout="market-stall"] .good:nth-child(even){translate:0 30px}
+  html[data-layout="market-stall"] .good:nth-child(1) .ph{aspect-ratio:1/1}
+  html[data-layout="market-stall"] .good:nth-child(3) .ph{aspect-ratio:3/4}
+  /* the feather, half-hidden behind the goods — --feather-url is set by
+     js/themes.js so it follows whichever theme's feather is active */
+  html[data-layout="market-stall"] #goods::after,
+  html[data-layout="market-stall"] #process::after{
+    content:""; position:absolute; top:6%; right:-70px; width:240px; height:620px;
+    background:var(--feather-url) no-repeat center/contain;
+    opacity:.09; pointer-events:none; z-index:0; rotate:8deg;
+  }
+  html[data-layout="market-stall"] #process::after{right:auto; left:-90px; rotate:-12deg; opacity:.07}
+}
+
+
+/* ================================================================
+   4. HAND — imperfection, layered on top of ANY layout (or none).
+   Subtle = considered craft. Pronounced = visibly handmade.
+   ================================================================ */
+
+/* ---- subtle ---- */
+html[data-hand="subtle"] .card:nth-child(4n+1),
+html[data-hand="subtle"] .good:nth-child(4n+1){rotate:-.32deg}
+html[data-hand="subtle"] .card:nth-child(4n+2),
+html[data-hand="subtle"] .good:nth-child(4n+2){rotate:.26deg}
+html[data-hand="subtle"] .card:nth-child(4n+3),
+html[data-hand="subtle"] .good:nth-child(4n+3){rotate:-.16deg}
+html[data-hand="subtle"] .card:nth-child(4n+4),
+html[data-hand="subtle"] .good:nth-child(4n+4){rotate:.36deg}
+html[data-hand="subtle"] .vert:nth-child(odd){rotate:-.24deg}
+html[data-hand="subtle"] .vert:nth-child(even){rotate:.2deg}
+/* corners that didn't come off a jig */
+html[data-hand="subtle"] .card:nth-child(odd){border-radius:calc(var(--radius-card) + 6px) var(--radius-card) calc(var(--radius-card) + 3px) var(--radius-card)}
+html[data-hand="subtle"] .card:nth-child(even){border-radius:var(--radius-card) calc(var(--radius-card) + 7px) var(--radius-card) calc(var(--radius-card) + 4px)}
+html[data-hand="subtle"] .form-aside{rotate:-.2deg}
+
+/* ---- pronounced ---- */
+html[data-hand="pronounced"] .card{overflow:visible}
+html[data-hand="pronounced"] .card:nth-child(4n+1),
+html[data-hand="pronounced"] .good:nth-child(4n+1){rotate:-1.15deg}
+html[data-hand="pronounced"] .card:nth-child(4n+2),
+html[data-hand="pronounced"] .good:nth-child(4n+2){rotate:.95deg}
+html[data-hand="pronounced"] .card:nth-child(4n+3),
+html[data-hand="pronounced"] .good:nth-child(4n+3){rotate:-.6deg}
+html[data-hand="pronounced"] .card:nth-child(4n+4),
+html[data-hand="pronounced"] .good:nth-child(4n+4){rotate:1.35deg}
+html[data-hand="pronounced"] .vert:nth-child(odd){rotate:-.9deg}
+html[data-hand="pronounced"] .vert:nth-child(even){rotate:.75deg}
+/* stitched edges */
+html[data-hand="pronounced"] .vert,
+html[data-hand="pronounced"] .form-aside{border-style:dashed}
+/* a strip of tape holding every third card down */
+html[data-hand="pronounced"] .card:nth-child(3n)::after{
+  content:""; position:absolute; top:-11px; left:50%; width:84px; height:22px;
+  translate:-50% 0; rotate:-2.4deg;
+  background:var(--accent-soft-2); border-left:1px dashed var(--line-2); border-right:1px dashed var(--line-2);
+  opacity:.9; pointer-events:none;
+}
+/* deckled edge on the goods tiles */
+html[data-hand="pronounced"] .good .ph{
+  clip-path:polygon(0 0,100% 0,100% 96%,92% 100%,78% 96.5%,61% 100%,44% 96%,27% 99.5%,12% 96%,0 100%);
+}
+html[data-hand="pronounced"] .form-aside{rotate:-.7deg}
+/* the maker's stamp — decorative only; if this direction wins it should
+   move into the HTML rather than living in a ::after */
+html[data-hand="pronounced"] .story .sw::after{
+  content:"Made by hand \00b7 Fargo\2013Moorhead";
+  display:inline-block; margin-top:34px; padding:10px 20px;
+  font-family:var(--struct); font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--peri); border:2px solid var(--line-2); border-radius:999px;
+  rotate:-5deg; opacity:.85;
+}
+
+/* phones: keep the rotations (they're the character) but drop anything
+   that would fight the single-column stack */
+@media (max-width:960px){
+  html[data-layout] .grid-3 > .card,
+  html[data-layout] .vert,
+  html[data-layout] .good,
+  html[data-layout] .step{translate:none !important}
+  html[data-hand="pronounced"] .card:nth-child(3n)::after{display:none}
+}
