@@ -1,121 +1,52 @@
 // ================================================================
-// THEME EXPLORATIONS — lets Amanda preview alternate looks for the
-// site and pick one, without anything being committed yet.
+// THREE FINAL DRAFTS — the last preview slider.
 //
-//   ?themes=1          show the picker (then browse the site normally)
-//   ?theme=<slug>      jump straight into one theme
+//   ?themes=1        show the picker, then browse the site normally
+//   ?theme=<slug>    jump straight into one draft
 //
-// A picked theme is remembered in localStorage — on THIS device only.
-// Nothing here changes what anyone else sees; making a theme the real
-// default is a code change (see README "Theme explorations").
+// A pick is remembered in localStorage — on THIS device only. Nothing
+// here changes what anyone else sees; with no draft selected the site
+// renders exactly as it does live today.
+//
+// Each draft bakes in the choices already made (kraft type, uniform
+// layout, pronounced hand details) — see css/themes.css. Promoting a
+// draft to the real design and deleting this machinery is written up
+// in README.md and in the corvid-trading skill's design-system.md.
 //
 // Safe to delete: this file, css/themes.css, and their two tags in
-// index.html + boards/*.html. Nothing else references them.
+// index.html + boards/rojo.html. Nothing else references them.
 // ================================================================
 (function () {
   var STORE_KEY = 'corvid-theme';
 
-  // Fonts are loaded ONLY when a theme that needs them is active, so
-  // normal visitors never pay for fonts they don't see.
-  var THEMES = [
+  // All three drafts share one font set, loaded only when a draft is
+  // active so normal visitors never pay for fonts they don't see.
+  var FONTS = 'family=Bitter:wght@400;500;600&family=Space+Mono:wght@400;700' +
+    '&family=Work+Sans:wght@400;500;600';
+
+  var DRAFTS = [
     {
-      slug: '', name: 'Original', blurb: 'What the site looks like today',
-      swatch: 'linear-gradient(115deg,#3b5bd9,#6a5cd6 45%,#b48ce6)', fonts: null
+      slug: '', name: 'Live site', blurb: 'What the site looks like today',
+      swatch: 'linear-gradient(135deg,#0a0c12 50%,#6a5cd6 50%)'
     },
     {
-      slug: 'sea-glass', name: 'Sea Glass', blurb: 'Light, tumbled glass, warm sand',
-      swatch: 'linear-gradient(115deg,#2f7d6e,#5aa88d 45%,#d79a54)',
-      fonts: 'family=Karla:wght@400;500;600;700'
+      slug: 'kraft-cobalt', name: 'Kraft & Cobalt',
+      blurb: 'Paper wins — kraft background, original blue/violet as the ink',
+      swatch: 'linear-gradient(135deg,#e8dfd0 50%,#2f4ac2 50%)'
     },
     {
-      slug: 'nest-kraft', name: 'Nest & Kraft', blurb: 'Paper, twig, rust, brass',
-      swatch: 'linear-gradient(115deg,#5a6b3f,#a8482a 55%,#b8862f)',
-      fonts: 'family=Bitter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600'
+      slug: 'ink-grain', name: 'Ink & Grain',
+      blurb: 'Dark wins — original colours exactly, kraft type + grain over them',
+      swatch: 'linear-gradient(135deg,#0a0c12 50%,#b48ce6 50%)'
     },
     {
-      slug: 'studio-daylight', name: 'Studio Daylight', blurb: 'Bright editorial lookbook',
-      swatch: 'linear-gradient(115deg,#5b3fd6,#7c4fe0 50%,#b48ce6)',
-      fonts: 'family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700'
-    },
-    {
-      slug: 'oil-slick', name: 'Oil Slick', blurb: 'Dark plum, glassy pebbles',
-      swatch: 'linear-gradient(115deg,#3fb0c9,#7b3fd4 40%,#d95f9a 74%,#f0c36a)', fonts: null
-    },
-    {
-      slug: 'ink-brass', name: 'Ink & Brass', blurb: 'Letterpress, warm black, brass',
-      swatch: 'linear-gradient(115deg,#a8532a,#c08a34 45%,#e0bb6a)',
-      fonts: 'family=Zilla+Slab:wght@400;500;600&family=Space+Mono:wght@400;700&family=Karla:wght@400;500;600'
-    },
-    {
-      slug: 'night-market', name: 'Night Market', blurb: 'Charcoal green, candlelit gold',
-      swatch: 'linear-gradient(115deg,#3f8f6a,#d2803c 55%,#edc57a)',
-      fonts: 'family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600'
+      slug: 'two-tone', name: 'Two-Tone Press',
+      blurb: 'Both — kraft body with deep-ink feature sections',
+      swatch: 'linear-gradient(135deg,#e8dfd0 50%,#0f1220 50%)'
     }
   ];
 
-  // Structure and imperfection are separate axes from colour — see
-  // css/layouts.css. Any combination composes.
-  var LAYOUTS = [
-    { slug: '', name: 'Uniform', blurb: 'Even grids — the current layout' },
-    { slug: 'workbench', name: 'Workbench', blurb: 'Uneven sizes, staggered, off-rail' },
-    { slug: 'broadside', name: 'Broadside', blurb: 'Letterpress: ruled, numbered, type-led' },
-    { slug: 'market-stall', name: 'Market Stall', blurb: 'Layered, overlapping, full-bleed bands' }
-  ];
-  var HANDS = [
-    { slug: '', name: 'None', blurb: 'Machine-straight' },
-    { slug: 'subtle', name: 'Subtle', blurb: 'Slight tilts, uneven corners' },
-    { slug: 'pronounced', name: 'Pronounced', blurb: 'Tape, stitching, deckled edges, a stamp' }
-  ];
-
   var params = new URLSearchParams(window.location.search);
-
-  // Works from both / and /boards/ — derive the site root from this script's
-  // own URL rather than guessing a relative prefix.
-  var ROOT = ((document.currentScript && document.currentScript.src) || '')
-    .replace(/js\/themes\.js(?:\?.*)?$/, '');
-
-  function featherUrl(slug) {
-    return ROOT + 'assets/feather-' + (slug || 'mark') + '.svg';
-  }
-
-  // Each theme has its own feather, recolored from the linework source with
-  // scripts/recolor_feather.py (see the corvid-trading skill) — never by hand.
-  var heroCache = {};
-
-  function applyFeather(slug) {
-    // market-stall uses the active feather as a background peeking out
-    // from behind sections, so keep a CSS-visible copy of the URL
-    document.documentElement.style.setProperty('--feather-url', 'url("' + featherUrl(slug) + '")');
-
-    // static marks: nav, story, footer, the board pages, the welcome banner
-    document.querySelectorAll('img.mark, .welcome-feather img').forEach(function (img) {
-      if (!img.getAttribute('data-feather-orig')) {
-        img.setAttribute('data-feather-orig', img.getAttribute('src'));
-      }
-      img.setAttribute('src', slug ? featherUrl(slug) : img.getAttribute('data-feather-orig'));
-    });
-
-    // the hero feather is inlined so CSS can twinkle its individual facets —
-    // swap only the inner content so the outer <svg> keeps its own viewBox
-    var hero = document.querySelector('.feather-wrap > svg');
-    if (!hero) return;
-    if (heroCache[''] === undefined) heroCache[''] = hero.innerHTML;
-    if (heroCache[slug] !== undefined) { hero.innerHTML = heroCache[slug]; return; }
-
-    fetch(featherUrl(slug))
-      .then(function (r) { return r.ok ? r.text() : null; })
-      .then(function (txt) {
-        if (!txt) return;
-        var parsed = new DOMParser().parseFromString(txt, 'image/svg+xml').querySelector('svg');
-        if (!parsed) return;
-        heroCache[slug] = parsed.innerHTML;
-        // only paint it if this theme is still the active one
-        if ((document.documentElement.getAttribute('data-theme') || '') === slug) {
-          hero.innerHTML = heroCache[slug];
-        }
-      })
-      .catch(function () { /* keep the current feather */ });
-  }
 
   function read() {
     try { return localStorage.getItem(STORE_KEY) || ''; } catch (e) { return ''; }
@@ -123,116 +54,72 @@
   function write(slug) {
     try { slug ? localStorage.setItem(STORE_KEY, slug) : localStorage.removeItem(STORE_KEY); } catch (e) {}
   }
-  function find(slug) {
-    for (var i = 0; i < THEMES.length; i++) if (THEMES[i].slug === slug) return THEMES[i];
-    return null;
+  function valid(slug) {
+    for (var i = 0; i < DRAFTS.length; i++) if (DRAFTS[i].slug === slug) return slug;
+    return '';
   }
 
-  function loadFonts(theme) {
-    if (!theme || !theme.fonts) return;
-    var id = 'theme-fonts-' + theme.slug;
-    if (document.getElementById(id)) return;
+  function loadFonts() {
+    if (document.getElementById('draft-fonts')) return;
     var link = document.createElement('link');
-    link.id = id;
+    link.id = 'draft-fonts';
     link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?' + theme.fonts + '&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?' + FONTS + '&display=swap';
     document.head.appendChild(link);
   }
 
   function apply(slug) {
-    var theme = find(slug);
-    if (!theme) { slug = ''; theme = THEMES[0]; }
-    loadFonts(theme);
-    if (slug) document.documentElement.setAttribute('data-theme', slug);
-    else document.documentElement.removeAttribute('data-theme');
-    // this script runs in <head> before the body exists, so the first feather
-    // swap waits for DOMContentLoaded (below); later switches run immediately
-    if (document.body) applyFeather(slug);
+    slug = valid(slug);
+    if (slug) {
+      loadFonts();
+      document.documentElement.setAttribute('data-theme', slug);
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
     return slug;
   }
 
-  // Apply as early as possible — this script is NOT deferred so the
-  // theme is set before first paint and the page doesn't flash.
+  // Runs in <head>, NOT deferred, so the draft is set before first paint
+  // and the page doesn't flash the live design first.
   var active = apply(params.get('theme') !== null ? params.get('theme') : read());
   if (params.get('theme') !== null) write(active);
-  if (!document.body) {
-    document.addEventListener('DOMContentLoaded', function () { applyFeather(active); }, { once: true });
-  }
-
-  // ---- the other two axes: structure and imperfection ----
-  function axis(key, storeKey, list) {
-    function valid(v) {
-      for (var i = 0; i < list.length; i++) if (list[i].slug === v) return v;
-      return '';
-    }
-    function get() {
-      try { return valid(localStorage.getItem(storeKey) || ''); } catch (e) { return ''; }
-    }
-    function set(v) {
-      v = valid(v);
-      try { v ? localStorage.setItem(storeKey, v) : localStorage.removeItem(storeKey); } catch (e) {}
-      if (v) document.documentElement.setAttribute('data-' + key, v);
-      else document.documentElement.removeAttribute('data-' + key);
-      return v;
-    }
-    var initial = params.get(key) !== null ? valid(params.get(key)) : get();
-    set(initial);
-    return { get: function () { return valid(document.documentElement.getAttribute('data-' + key) || ''); }, set: set };
-  }
-
-  var layout = axis('layout', 'corvid-layout', LAYOUTS);
-  var hand = axis('hand', 'corvid-hand', HANDS);
 
   if (params.get('themes') === null) return;
 
-  // ---- picker UI (only with ?themes=1) ----
   function mountPicker() {
     var box = document.createElement('div');
     box.className = 'theme-picker';
     box.innerHTML =
-      '<button type="button" class="tp-close" aria-label="Collapse theme picker">✕</button>' +
-      '<button type="button" class="tp-reopen">Themes</button>' +
-      '<h4>Try a look</h4>' +
+      '<button type="button" class="tp-close" aria-label="Collapse the draft picker">✕</button>' +
+      '<button type="button" class="tp-reopen">Drafts</button>' +
+      '<h4>Three final drafts</h4>' +
       '<p class="tp-note">Previewing on this device only — nothing changes for anyone else. ' +
-      'Tell Shane which one you like and he’ll make it real.</p>' +
-      '<div class="tp-body">' +
-        group('theme', 'Colour', THEMES, active) +
-        group('layout', 'Layout', LAYOUTS, layout.get()) +
-        group('hand', 'Hand', HANDS, hand.get()) +
-      '</div>';
+      'Same fonts, layout and hand-made details in all three; they differ in how ' +
+      'the paper and the ink go together.</p>' +
+      '<ul>' + DRAFTS.map(function (d) {
+        return '<li><button type="button" class="tp-opt" data-slug="' + d.slug + '"' +
+          (d.slug === active ? ' aria-current="true"' : '') + '>' +
+          '<span class="tp-sw" style="background:' + d.swatch + '"></span>' +
+          '<span class="tp-name"><b>' + d.name + '</b><span>' + d.blurb + '</span></span>' +
+          '</button></li>';
+      }).join('') + '</ul>';
     // on a phone the open panel covers most of the page — start it out of
     // the way, one tap from opening
     if (window.innerWidth < 640) box.classList.add('tp-collapsed');
     document.body.appendChild(box);
 
     box.addEventListener('click', function (e) {
-      var close = e.target.closest('.tp-close');
-      if (close) { box.classList.add('tp-collapsed'); return; }
+      if (e.target.closest('.tp-close')) { box.classList.add('tp-collapsed'); return; }
       if (e.target.closest('.tp-reopen')) { box.classList.remove('tp-collapsed'); return; }
       var opt = e.target.closest('.tp-opt');
       if (!opt) return;
-      var axisName = opt.getAttribute('data-axis');
-      var slug = opt.getAttribute('data-slug');
-
-      if (axisName === 'theme') { active = apply(slug); write(active); slug = active; }
-      if (axisName === 'layout') slug = layout.set(slug);
-      if (axisName === 'hand') slug = hand.set(slug);
-
-      box.querySelectorAll('.tp-opt[data-axis="' + axisName + '"]').forEach(function (b) {
-        if (b.getAttribute('data-slug') === slug) b.setAttribute('aria-current', 'true');
+      active = apply(opt.getAttribute('data-slug'));
+      write(active);
+      box.querySelectorAll('.tp-opt').forEach(function (b) {
+        if (b.getAttribute('data-slug') === active) b.setAttribute('aria-current', 'true');
         else b.removeAttribute('aria-current');
       });
     });
-  }
-
-  function group(axisName, label, list, current) {
-    return '<h5 class="tp-group">' + label + '</h5><ul>' + list.map(function (t) {
-      return '<li><button type="button" class="tp-opt" data-axis="' + axisName + '" data-slug="' + t.slug + '"' +
-        (t.slug === current ? ' aria-current="true"' : '') + '>' +
-        (t.swatch ? '<span class="tp-sw" style="background:' + t.swatch + '"></span>' : '<span class="tp-sw tp-sw-none"></span>') +
-        '<span class="tp-name"><b>' + t.name + '</b><span>' + t.blurb + '</span></span>' +
-        '</button></li>';
-    }).join('') + '</ul>';
   }
 
   if (document.readyState === 'loading') {
