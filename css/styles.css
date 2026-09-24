@@ -1,57 +1,64 @@
 :root{
-    --ink:#0a0c12; --ink-2:#111623; --ink-3:#0c1017;
-    --line:rgba(142,162,230,.14); --line-2:rgba(142,162,230,.28);
-    --cobalt:#3b5bd9; --blue:#4f74e0; --peri:#8ea2e6;
-    --violet:#8a63d4; --amethyst:#b48ce6; --indigo:#20264f;
-    --bone:#eceaf2; --muted:#9aa0b8; --muted-2:#727892;
-    --iri:linear-gradient(115deg,#3b5bd9 0%,#6a5cd6 45%,#b48ce6 100%);
-    --serif:"Fraunces",Georgia,serif;
-    --struct:"Space Grotesk",system-ui,sans-serif;
-    --body:"Hanken Grotesk",system-ui,sans-serif;
+    /* ---- KRAFT & COBALT — the chosen design ----
+       Warm kraft paper carrying the original iridescent blue→violet as the
+       ink. Promoted from the draft system; the picker and the alternates
+       are gone. Keep hardcoded colours/radii OUT of the rules below — add
+       a token here instead. */
+    --ink:#e8dfd0; --ink-2:#f4eee3; --ink-3:#ddd2c0;
+    --line:rgba(36,38,62,.18); --line-2:rgba(36,38,62,.34);
+    --cobalt:#3b5bd9; --blue:#4f74e0; --peri:#3f52b8;
+    --violet:#7b4fd0; --amethyst:#6b46c4; --indigo:#d6cfc0;
+    --bone:#1b1d2b; --muted:#54566c; --muted-2:#7d7f93;
+    --iri:linear-gradient(115deg,#2f4ac2 0%,#5a4cc4 45%,#7b4fd0 100%);
+    --serif:"Bitter",Georgia,serif;
+    --struct:"Space Mono",ui-monospace,monospace;
+    --body:"Work Sans",system-ui,sans-serif;
     --wrap:1200px; --pad:clamp(20px,5vw,72px);
 
-    /* ---- themeable surface / shape / texture tokens ----
-       Defaults below reproduce the original look exactly. css/themes.css
-       overrides these per theme — see js/themes.js and the theme picker
-       (?themes=1). Keep new hardcoded colors OUT of the rules below; add
-       a token here instead so every theme picks up the change. */
+    /* ---- surfaces ---- */
     --bg-field:
-      radial-gradient(60vw 60vw at 82% -8%, rgba(59,91,217,.16), transparent 60%),
-      radial-gradient(50vw 50vw at -5% 20%, rgba(138,99,212,.12), transparent 60%),
-      radial-gradient(55vw 45vw at 60% 108%, rgba(180,140,230,.08), transparent 60%);
-    --texture:none;
+      radial-gradient(60vw 60vw at 82% -8%, rgba(59,91,217,.14), transparent 60%),
+      radial-gradient(50vw 50vw at -5% 20%, rgba(138,99,212,.11), transparent 60%);
+    --texture:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
     --texture-blend:normal;
-    --nav-bg:rgba(10,12,18,.72);
+    --nav-bg:rgba(232,223,208,.88);
     --nav-blur:blur(12px);
-    --surface-card:linear-gradient(180deg,rgba(20,26,42,.7),rgba(12,16,25,.7));
-    --surface-soft:rgba(17,22,35,.4);
-    --surface-soft-2:rgba(20,26,42,.5);
+    --surface-card:linear-gradient(180deg,#f4eee3,#ece4d6);
+    --surface-soft:rgba(255,252,245,.5);
+    --surface-soft-2:rgba(255,252,245,.62);
     --surface-tint:rgba(59,91,217,.09);
-    --accent-soft:rgba(59,91,217,.16);
-    --accent-soft-2:rgba(142,162,230,.07);
-    --input-bg:var(--ink-2);
-    --input-focus-bg:#141a29;
-    --text-lede:#c7cbdd;
-    --text-story:#c2c7db;
-    --ph-gradient:linear-gradient(135deg,rgba(59,91,217,.35),rgba(138,99,212,.28) 60%,rgba(180,140,230,.22));
-    --shadow-btn:0 6px 22px -8px rgba(90,110,220,.7);
-    --shadow-btn-hover:0 12px 30px -8px rgba(120,110,230,.8);
-    --shadow-card:none;
-    --feather-glow:drop-shadow(0 30px 60px rgba(40,50,120,.4));
-    --on-accent:#0a0c12;
-    --btn-primary-bg:var(--iri);
-    --radius-btn:999px;
-    --radius-card:16px;
-    --radius-tile:14px;
-    --radius-lg:18px;
-    --radius-input:10px;
-    --radius-sm:8px;
+    --accent-soft:rgba(59,91,217,.13);
+    --accent-soft-2:rgba(59,91,217,.07);
+    --input-bg:#f4eee3;
+    --input-focus-bg:#fffdf7;
+    --text-lede:#3a3c4e;
+    --text-story:#3a3c4e;
+    --ph-gradient:linear-gradient(135deg,rgba(59,91,217,.3),rgba(123,79,208,.24) 60%,rgba(180,140,230,.2));
+    --tape:rgba(36,38,62,.14);
+
+    /* ---- depth ---- */
+    --shadow-btn:none;
+    --shadow-btn-hover:0 6px 14px -8px rgba(36,38,62,.5);
+    --shadow-card:0 1px 0 rgba(36,38,62,.1);
+    --feather-glow:drop-shadow(0 16px 30px rgba(36,38,62,.24));
+    --on-accent:#f4efe6;
+    --btn-primary-bg:#2f4ac2;
+
+    /* ---- shape: printed, not injection-moulded ---- */
+    --radius-btn:4px;
+    --radius-card:6px;
+    --radius-tile:4px;
+    --radius-lg:8px;
+    --radius-input:4px;
+    --radius-sm:3px;
     --border-w:1px;
-    --card-lift:-4px;
-    --nav-size:13.5px;
-    --nav-gap:34px;
+    --card-lift:-2px;
+
+    /* ---- type ---- */
+    --nav-size:11.5px;
+    --nav-gap:22px;
     --eyebrow-size:12px;
-    --eyebrow-tracking:.24em;
+    --eyebrow-tracking:.16em;
     --eyebrow-transform:uppercase;
     --eyebrow-rule:26px;
     --display-weight:500;
@@ -183,7 +190,13 @@
   .steps{display:grid; grid-template-columns:repeat(4,1fr); gap:0; border-top:var(--border-w) solid var(--line)}
   .step{padding:30px 26px 30px 0; border-right:var(--border-w) solid var(--line); position:relative}
   .step:last-child{border-right:none}
-  .step .n{font-family:var(--struct); font-weight:700; font-size:2.4rem; letter-spacing:-.02em; background:var(--iri); -webkit-background-clip:text; background-clip:text; color:transparent; line-height:1}
+  /* spoken ordinals, not 01/02/03 — the step should read like someone
+     talking you through it, not like a numbered ticket */
+  .step .n{
+    font-family:var(--serif); font-style:italic; font-weight:var(--display-weight);
+    font-size:1.75rem; line-height:1.1; letter-spacing:-.01em;
+    background:var(--iri); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
   .step h3{font-family:var(--struct); font-weight:600; font-size:1.08rem; margin-top:14px}
   .step p{color:var(--muted); font-size:.95rem; margin:.5em 0 0; padding-right:14px}
 
@@ -319,4 +332,38 @@
     .goods-grid{grid-template-columns:1fr 1fr}
     .row{grid-template-columns:1fr}
     .hero-meta{gap:18px}
+  }
+
+  /* ---------- HAND-MADE DETAIL ----------
+     Promoted from the draft system's "pronounced" level: tape, stitching,
+     deckled edges and slight tilts, so the page reads made rather than
+     generated. Tilts use the INDEPENDENT `rotate:` property because
+     `.reveal` owns `transform` and sets `transform:none` when it fires. */
+  .card{overflow:visible}
+  .card:nth-child(4n+1), .good:nth-child(4n+1){rotate:-1.15deg}
+  .card:nth-child(4n+2), .good:nth-child(4n+2){rotate:.95deg}
+  .card:nth-child(4n+3), .good:nth-child(4n+3){rotate:-.6deg}
+  .card:nth-child(4n+4), .good:nth-child(4n+4){rotate:1.35deg}
+  .vert:nth-child(odd){rotate:-.9deg}
+  .vert:nth-child(even){rotate:.75deg}
+  .form-aside{rotate:-.7deg}
+  .vert, .form-aside{border-style:dashed}
+  /* a strip of tape holding every third card down */
+  .card:nth-child(3n)::after{
+    content:""; position:absolute; top:-11px; left:50%; width:88px; height:22px;
+    translate:-50% 0; rotate:-2.4deg;
+    background:var(--tape); border-left:1px dashed var(--line-2); border-right:1px dashed var(--line-2);
+    pointer-events:none;
+  }
+  .good .ph{
+    clip-path:polygon(0 0,100% 0,100% 96%,92% 100%,78% 96.5%,61% 100%,44% 96%,27% 99.5%,12% 96%,0 100%);
+  }
+  .maker-stamp{
+    display:inline-block; margin-top:34px; padding:10px 20px;
+    font-family:var(--struct); font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--peri); border:2px solid var(--line-2); border-radius:999px;
+    rotate:-5deg; opacity:.9;
+  }
+  @media (max-width:960px){
+    .card:nth-child(3n)::after{display:none}
   }

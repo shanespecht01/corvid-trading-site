@@ -138,7 +138,8 @@
       '<section class="board-steps"><div class="wrap">' +
         '<div class="sec-head"><span class="eyebrow">How this becomes a real quote</span><h2>Four steps, no surprises.</h2></div>' +
         '<div class="steps">' + steps.map(function (s, i) {
-          return '<div class="step"><div class="n">0' + (i + 1) + '</div><h3>' + esc(s[0]) + '</h3><p>' + esc(s[1]) + '</p></div>';
+          var ordinals = ['First', 'Then', 'Next', 'Finally'];
+      return '<div class="step"><div class="n">' + ordinals[i] + '</div><h3>' + esc(s[0]) + '</h3><p>' + esc(s[1]) + '</p></div>';
         }).join('') + '</div>' +
       '</div></section>'
     );

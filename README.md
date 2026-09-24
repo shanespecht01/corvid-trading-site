@@ -66,58 +66,27 @@ section in `index.html`, and the `<link>`/`<script>` tags pointing at
 `boards/` is staying). Full step-by-step is in the comment block above
 `#welcomeBanner` in `index.html`.
 
-## Three final drafts (experimental)
+## The design
 
-The last preview slider. Add `?themes=1` to any URL for the picker, or
-`?theme=<slug>` to jump straight into one. A pick is remembered in
-`localStorage` — **per device**, changing nothing for anyone else. With no
-draft selected the site renders exactly as it does live.
+**Kraft & Cobalt** — warm kraft paper carrying the original iridescent
+blue→violet as the ink. Chosen in review from three drafts; the draft
+picker and the alternates have been removed.
 
-These came out of Amanda's review of the earlier explorations: she picked the
-**original colour scheme**, Nest & Kraft's **type and background**, the
-**uniform layout**, and the **pronounced** hand details. Those picks contain
-one real conflict — the original palette is a near-black jewel tone, and
-Nest & Kraft's background is light kraft paper, so they can't both be the
-background. Each draft resolves it differently, and that is the decision
-still to be made:
+- **Type:** Bitter (display), Space Mono (labels, nav, data), Work Sans (body)
+- **Surface:** kraft paper with a fine grain, squared corners, hairline rules
+- **Hand-made detail:** slight tilts, tape strips, stitched (dashed) edges,
+  deckled tiles, and a maker’s stamp — deliberate, not decoration
+- **Feather:** unchanged. The original iridescent facets over black linework
+  read as stained glass on paper.
 
-| Draft | `?theme=` | Resolves the conflict by |
-|---|---|---|
-| Kraft & Cobalt | `kraft-cobalt` | Paper wins — kraft background, original blue/violet as the ink |
-| Ink & Grain | `ink-grain` | Dark wins — original colours exactly, kraft type + grain over them |
-| Two-Tone Press | `two-tone` | Both — kraft body with deep-ink feature sections |
+Everything visual is driven by tokens in `:root` in `css/styles.css` —
+colour, surface, radius, border, texture, type. **Don’t put raw colours or
+radii in rules**; add a token. Two things to know before editing:
 
-Everything else is shared and no longer optional: Bitter / Space Mono /
-Work Sans, squared corners, paper grain, and the pronounced hand details
-(tape, stitching, deckled tiles, maker's stamp). The uniform grid is the
-site's own layout, so there's nothing to override for it. All three keep the
-original feather, since the original colour scheme was the pick.
-
-How it works: `css/styles.css` `:root` holds tokens for colour, surface,
-radius, border, texture and type. `css/themes.css` overrides only those
-tokens per draft — no layout forks, no duplicated CSS — and `js/themes.js`
-sets `data-theme` on `<html>` before first paint, loading the drafts' fonts
-only when a draft is actually active so normal visitors pay nothing.
-
-**Adding a token:** if something needs a value that's still hardcoded, add
-the token to `:root` in `styles.css` (default = today's look) and reference
-it — don't put raw colours or radii in the rules.
-
-**Promoting the winner and deleting the rest:**
-1. Copy the winning `html[data-theme="…"]` block's declarations over the
-   matching ones in `:root` in `css/styles.css`, plus the shared
-   `html[data-theme]` block (fonts, radii, texture, nav sizing).
-2. Move the fonts from `FONTS` in `js/themes.js` into the Google Fonts
-   `<link>` in **both** `index.html` and `boards/rojo.html`.
-3. Move the pronounced-hand rules into `styles.css`, dropping the
-   `html[data-theme]` prefix. Move the maker's stamp out of the
-   `::after { content: … }` and into real markup in `#story`.
-4. For `two-tone`, keep its per-section token block — that's the whole idea.
-5. Delete `css/themes.css`, `js/themes.js`, and their tags in `index.html`
-   and `boards/rojo.html`. Nothing else references them.
-6. Update the `corvid-trading` skill's `design-system.md` to the chosen
-   values — **including the "dark, restrained, jewel-toned" rule if a
-   paper-backed draft wins** — or the docs and the site will disagree.
+- `.reveal` owns `transform` and sets `transform:none` when it fires, so the
+  hand-made tilts use the **independent** `rotate:` property instead.
+- Steps are worded (“First / Then / Next / Finally”), not numbered. `01 02
+  03 04` was cut for reading like a ticketing system rather than a person.
 
 ## Client idea boards
 
