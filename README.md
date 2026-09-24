@@ -66,65 +66,58 @@ section in `index.html`, and the `<link>`/`<script>` tags pointing at
 `boards/` is staying). Full step-by-step is in the comment block above
 `#welcomeBanner` in `index.html`.
 
-## Theme explorations (experimental)
+## Three final drafts (experimental)
 
-Alternate looks for the site, so a direction can be picked by seeing it
-rather than describing it. Add `?themes=1` to any URL for the picker. Three
-independent axes, which compose in any combination:
+The last preview slider. Add `?themes=1` to any URL for the picker, or
+`?theme=<slug>` to jump straight into one. A pick is remembered in
+`localStorage` — **per device**, changing nothing for anyone else. With no
+draft selected the site renders exactly as it does live.
 
-| Axis | Param | Values |
+These came out of Amanda's review of the earlier explorations: she picked the
+**original colour scheme**, Nest & Kraft's **type and background**, the
+**uniform layout**, and the **pronounced** hand details. Those picks contain
+one real conflict — the original palette is a near-black jewel tone, and
+Nest & Kraft's background is light kraft paper, so they can't both be the
+background. Each draft resolves it differently, and that is the decision
+still to be made:
+
+| Draft | `?theme=` | Resolves the conflict by |
 |---|---|---|
-| Colour | `?theme=` | `sea-glass`, `nest-kraft`, `studio-daylight`, `oil-slick`, `ink-brass`, `night-market` |
-| Layout | `?layout=` | `workbench`, `broadside`, `market-stall` |
-| Hand | `?hand=` | `subtle`, `pronounced` |
+| Kraft & Cobalt | `kraft-cobalt` | Paper wins — kraft background, original blue/violet as the ink |
+| Ink & Grain | `ink-grain` | Dark wins — original colours exactly, kraft type + grain over them |
+| Two-Tone Press | `two-tone` | Both — kraft body with deep-ink feature sections |
 
-Picks are remembered in `localStorage` — **per device**, changing nothing for
-anyone else. Colour lives in `css/themes.css`; layout and hand in
-`css/layouts.css`, which changes no HTML at all — it restructures the
-existing markup via grid spans, offsets and pseudo-elements, so any of it
-can be thrown away without unpicking the page.
+Everything else is shared and no longer optional: Bitter / Space Mono /
+Work Sans, squared corners, paper grain, and the pronounced hand details
+(tape, stitching, deckled tiles, maker's stamp). The uniform grid is the
+site's own layout, so there's nothing to override for it. All three keep the
+original feather, since the original colour scheme was the pick.
 
-Two gotchas worth knowing before editing `layouts.css`: `.reveal` animates
-`transform` and sets `transform:none` when it fires, so rotations/offsets
-there use the **independent** `rotate:`/`translate:` properties instead;
-and structural changes are gated to `min-width:961px` because the phone
-layout is already a single column.
-
-How it works: `css/styles.css` `:root` now holds tokens for colour, surface,
+How it works: `css/styles.css` `:root` holds tokens for colour, surface,
 radius, border, texture and type. `css/themes.css` overrides only those
-tokens per theme — no layout rules, no duplicated CSS. `js/themes.js` sets
-`data-theme` on `<html>` before first paint and loads a theme's Google Fonts
-only when that theme is actually used, so normal visitors pay nothing.
+tokens per draft — no layout forks, no duplicated CSS — and `js/themes.js`
+sets `data-theme` on `<html>` before first paint, loading the drafts' fonts
+only when a draft is actually active so normal visitors pay nothing.
 
-**The feather** is retinted per theme, never hand-edited — each
-`assets/feather-<slug>.svg` was generated from the linework source with the
-`corvid-trading` skill's `scripts/recolor_feather.py`, which now carries a
-matching palette per theme (plus its own shadow/highlight/flash tints, since
-the default indigo shadow turns the warm palettes muddy):
+**Adding a token:** if something needs a value that's still hardcoded, add
+the token to `:root` in `styles.css` (default = today's look) and reference
+it — don't put raw colours or radii in the rules.
 
-    python scripts/recolor_feather.py --in assets/feather-linework.svg \
-      --palette <slug> --tight --out assets/feather-<slug>.svg
-
-`js/themes.js` swaps the `<img class="mark">` feathers by `src`, and for the
-inlined hero feather replaces only the inner content of the existing `<svg>`
-— so the outer element keeps its own viewBox (no double-viewBox bug) and the
-facets keep the `class="f"` + `--ty/--tx/--r` vars the twinkle animates.
-Switching back to Original restores the shipped feathers, including the
-welcome banner's deliberately-different peacock one.
-
-**Adding a token:** if a theme needs a value that's still hardcoded, add the
-token to `:root` in `styles.css` (default = today's look) and reference it —
-don't put raw colours in the rules.
-
-**Making a theme the real default:** fold its token block into `:root` in
-`styles.css`, move its fonts into the `<head>` font link, then delete
-`css/themes.css`, `js/themes.js`, and their tags in `index.html` +
-`boards/*.html`. Nothing else references them.
-
-**Note:** several of these deliberately break the "dark, restrained,
-jewel-toned" rule in the brand doc — that's the point of the exercise. If a
-light theme wins, update the `corvid-trading` skill's `design-system.md` to
-match, or the two will disagree.
+**Promoting the winner and deleting the rest:**
+1. Copy the winning `html[data-theme="…"]` block's declarations over the
+   matching ones in `:root` in `css/styles.css`, plus the shared
+   `html[data-theme]` block (fonts, radii, texture, nav sizing).
+2. Move the fonts from `FONTS` in `js/themes.js` into the Google Fonts
+   `<link>` in **both** `index.html` and `boards/rojo.html`.
+3. Move the pronounced-hand rules into `styles.css`, dropping the
+   `html[data-theme]` prefix. Move the maker's stamp out of the
+   `::after { content: … }` and into real markup in `#story`.
+4. For `two-tone`, keep its per-section token block — that's the whole idea.
+5. Delete `css/themes.css`, `js/themes.js`, and their tags in `index.html`
+   and `boards/rojo.html`. Nothing else references them.
+6. Update the `corvid-trading` skill's `design-system.md` to the chosen
+   values — **including the "dark, restrained, jewel-toned" rule if a
+   paper-backed draft wins** — or the docs and the site will disagree.
 
 ## Client idea boards
 
